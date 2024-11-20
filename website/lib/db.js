@@ -1,3 +1,4 @@
+// lib/db.js
 const { Pool } = require('pg');
 
 // Get the database URL from environment variables (use Vercel's DATABASE_URL)
