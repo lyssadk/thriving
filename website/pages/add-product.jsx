@@ -39,8 +39,12 @@ const successStyle = {
   marginBottom: '10px',
 };
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+
+
 
 export default function AddProductForm() {
+  const [productPic, setProductPic] = useState('');
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [companyId, setCompanyId] = useState('');
@@ -49,6 +53,21 @@ export default function AddProductForm() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
+  function convertToBase64(e) {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        const file = files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setProductPic(reader.result);
+          console.log("Reader: ", reader.result);
+        }
+        reader.onerror = () => {
+          console.log("Error");
+        }
+      }
+  }
   // Fetch the list of companies on component mount
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -88,6 +107,7 @@ export default function AddProductForm() {
       name,
       price: parseFloat(price),
       company_id: parseInt(companyId),
+      image: productPic,
     };
     console.log(productData);
     try {
@@ -100,8 +120,8 @@ export default function AddProductForm() {
       });
 
       const data = await res.json();
-      if (!res.ok || res.status !== 200 || res.status !== 201) throw new Error('Failed to create product');
-      console.log(res)
+      if (!res.ok || res.status !== 200 || res.status !== 201) {throw new Error('Failed to create product');}
+      console.log(data)
       setSuccess(true); // Indicate successful product creation
       setName('');
       setPrice('');
@@ -121,6 +141,22 @@ export default function AddProductForm() {
       {success && <p style={{ color: 'green' }}>Product added successfully!</p>}
 
       <form style={formStyle} onSubmit={handleSubmit}>
+
+      <div>
+          <label htmlFor="productPic" className="block text-sm font-medium leading-6 text-gray-900 text-left">Profile Picture</label>
+            <div className="mt-2 flex items-center">
+              {productPic && (
+                <Image src={productPic} alt="Profile Preview" width={100} height={50}/>
+              )}
+              <input 
+                id="productPic" 
+                name="productPic" 
+                type="file" 
+                onChange={convertToBase64}
+                className="block w-full text-gray-900"
+              />
+            </div>
+        </div>
         <div >
           <label htmlFor="name">Product Name:</label>
           <input style={inputStyle}

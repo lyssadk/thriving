@@ -16,15 +16,15 @@ export default async function handler(req, res) {
         
         case 'POST':
             try {
-                const { name, price, company_id } = req.body; // Expecting fields in the request body
+                const { name, price, company_id, image } = req.body; // Expecting fields in the request body
                 if (!name || !price || !company_id) {
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
                 // Insert the new product into the database
                 const newProduct = await sql`
-                    INSERT INTO products (name, price, company_id)
-                    VALUES (${name}, ${price}, ${company_id})
+                    INSERT INTO products (name, price, company_id, image)
+                    VALUES (${name}, ${price}, ${company_id}, ${image})
                     RETURNING *;
                 `;
 

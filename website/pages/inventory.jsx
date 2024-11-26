@@ -1,72 +1,83 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '../components/Card';
-// const products = [
-//     {
-//         title: 'Product 1',
-//         content: 'This is the first product'
-//     },
-//     {
-//         title: 'Product 2',
-//         content: 'This is the second product'
-//     },
-//     {
-//         title: 'Product 3',
-//         content: 'This is the third product'
-//     },
-//     {
-//         title: 'Product 4',
-//         content: 'This is the fourth product'
-//     },
-//     {
-//         title: 'Product 5',
-//         content: 'This is the fifth product'
-//     },
-//     {
-//         title: 'Product 6',
-//         content: 'This is the sixth product'
-//     },
-//     {
-//         title: 'Product 7',
-//         content: 'This is the seventh product'
-//     },
-//     {
-//         title: 'Product 8',
-//         content: 'This is the eighth product'
-//     },
-//     {
-//         title: 'Product 9',
-//         content: 'This is the ninth product'
-//     },
-//     {
-//         title: 'Product 10',
-//         content: 'This is the tenth product'
-//     },
-// ]
 
 export default function inventory() {
     const [products, setProducts] = useState([]);
+    const [companies, setCompanies] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);   
 
     useEffect(() => {
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('/api/products');
-            setProducts(response.data);
+            const response = await axios.get('/api/Product');
+            const productsList = response.data.rows.map((product) => ({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                company_id: product.company_id,
+            }));
+            console.log(productsList)
+            setProducts(productsList);
         } catch (error) {
             console.error('Error fetching products:', error);
         }
     };
+    const fetchCompanies = async () => {
+    try {
+        const response = await axios.get('/api/companies');
+        const companiesList = response.data.rows.map((company) => ({
+            id: company.id,
+            company_name: company.company_name,
+        }));
+        setCompanies(companiesList);
+    } catch (error) {
+        console.error('Error fetching companies:', error);
+    }};
 
     fetchProducts();
+    fetchCompanies();
 }, []);
     return (
         <div>
             <h1>Inventory</h1>
             <p>Welcome to the Inventory!</p>
+            
+            
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                {products.map((product, index) => (
-                    <Card key={index} title={product.title} content={product.content} />
-                ))}
+            <div>
+                <label htmlFor="companyFilter">Filter by Company:</label>
+                <select
+                    id="companyFilter"
+                    onChange={(e) => {
+                        const companyId = e.target.value;
+                        if (!companyId) {
+                           // If no company is selected, show all products
+                            setFilteredProducts(products);
+                            console.log(products);
+                            console.log(filteredProducts);
+                        } 
+                        else {
+                            const filteredProducts = products.filter(
+                                (product) => product.company_id === parseInt(companyId)
+                            );
+                            setFilteredProducts(filteredProducts);
+                        }
+                    }}
+                >
+                    <option value="">All Companies</option>
+                    {companies.map((company) => (
+                        <option key={company.id} value={company.id}>
+                            {company.company_name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            { filteredProducts && filteredProducts.map((product, index) => (
+                    <Card key={index} title={product.name} content={product.price} />))}
+            { !filteredProducts && products.map((product, index) => (
+                    <Card key={index} title={product.name} content={product.price} />))}
             </div>
         </div>
     )
