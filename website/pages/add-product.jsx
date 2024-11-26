@@ -1,5 +1,43 @@
 // components/AddProductForm.js
+const formStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '20px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  borderRadius: '8px',
+  maxWidth: '400px',
+  margin: '0 auto',
+  backgroundColor: '#fff',
+};
 
+const inputStyle = {
+  marginBottom: '10px',
+  padding: '10px',
+  width: '100%',
+  borderRadius: '4px',
+  border: '1px solid #ccc',
+};
+
+const buttonStyle = {
+  padding: '10px 20px',
+  borderRadius: '4px',
+  border: 'none',
+  backgroundColor: '#007BFF',
+  color: '#fff',
+  cursor: 'pointer',
+};
+
+const errorStyle = {
+  color: 'red',
+  marginBottom: '10px',
+};
+
+const successStyle = {
+  color: 'green',
+  marginBottom: '10px',
+};
 import { useState, useEffect } from 'react';
 
 export default function AddProductForm() {
@@ -18,7 +56,12 @@ export default function AddProductForm() {
         const res = await fetch('/api/companies'); // Assuming you have an API to fetch companies
         if (!res.ok) throw new Error('Failed to fetch companies');
         const data = await res.json();
-        setCompanies(data);
+        const dataList = data.rows.map((company) => ({
+          id: company.id,
+          company_name: company.company_name,
+        }));
+        console.log(dataList);
+        setCompanies(dataList);
       } catch (err) {
         setError(err.message);
       }
@@ -46,9 +89,9 @@ export default function AddProductForm() {
       price: parseFloat(price),
       company_id: parseInt(companyId),
     };
-
+    console.log(productData);
     try {
-      const res = await fetch('/api/products', {
+      const res = await fetch('/api/Product', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,14 +100,15 @@ export default function AddProductForm() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to create product');
-
+      if (!res.ok || res.status !== 200 || res.status !== 201) throw new Error('Failed to create product');
+      console.log(res)
       setSuccess(true); // Indicate successful product creation
       setName('');
       setPrice('');
       setCompanyId('');
     } catch (err) {
       setError(err.message); // Handle errors (e.g., network or validation errors)
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -72,14 +116,14 @@ export default function AddProductForm() {
 
   return (
     <div>
-      <h2>Add Product</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <h2 style={{textAlign:'center', paddingTop: '50px'}}>Add Product</h2>
+      
       {success && <p style={{ color: 'green' }}>Product added successfully!</p>}
 
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form style={formStyle} onSubmit={handleSubmit}>
+        <div >
           <label htmlFor="name">Product Name:</label>
-          <input
+          <input style={inputStyle}
             type="text"
             id="name"
             value={name}
@@ -88,9 +132,9 @@ export default function AddProductForm() {
           />
         </div>
 
-        <div>
+        <div >
           <label htmlFor="price">Price:</label>
-          <input
+          <input style={inputStyle}
             type="number"
             id="price"
             value={price}
@@ -101,9 +145,9 @@ export default function AddProductForm() {
           />
         </div>
 
-        <div>
+        <div >
           <label htmlFor="company">Company:</label>
-          <select
+          <select style={inputStyle}
             id="company"
             value={companyId}
             onChange={(e) => setCompanyId(e.target.value)}
@@ -114,11 +158,11 @@ export default function AddProductForm() {
               <option key={company.id} value={company.id}>
                 {company.company_name}
               </option>
-            ))}
+            ))} 
           </select>
         </div>
 
-        <button type="submit" disabled={loading}>
+        <button style={buttonStyle} type="submit" disabled={loading}>
           {loading ? 'Adding Product...' : 'Add Product'}
         </button>
       </form>
