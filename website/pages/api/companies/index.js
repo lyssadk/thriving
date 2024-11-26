@@ -1,14 +1,24 @@
 // pages/api/companies.js
-import { query } from "../../../lib/db"; // Import the database module
 
-export default async function handler(req, res) {
-  try {
-    // Fetch the list of companies from the database using the query function
-    console.log('trying to fetch companies');
-    const companies = await query('SELECT * FROM companies'); // SQL query to fetch companies
-    res.status(200).json(companies); // Return the companies as JSON
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Failed to fetch companies' });
-  }
+import { sql } from '@vercel/postgres';
+ 
+export default async function companies(req, res) {
+    const data = await sql`SELECT * FROM companies`;
+    console.log(res.json(data));
+    return res.json(data);
 }
+
+
+// import { query } from "../../../lib/db"; // Import the database module
+
+// export default async function handler(req, res) {
+//   try {
+//     // Fetch the list of companies from the database using the query function
+//     console.log('trying to fetch companies');
+//     const companies = await query('SELECT * FROM companies'); // SQL query to fetch companies
+//     res.status(200).json(companies); // Return the companies as JSON
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: 'Failed to fetch companies' });
+//   }
+// }
