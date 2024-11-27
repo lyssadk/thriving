@@ -1,5 +1,14 @@
 // pages/dashboard.js
 import { useState, useEffect } from 'react';
+import Header from '../components/Header';
+
+const box = {
+  border: '1px solid black',
+  padding: '10px',
+  margin: '10px',
+  borderRadius: '8px',
+  backgroundColor: '#fff',
+};
 
 const DashboardPage = () => {
   const [csvFile, setCsvFile] = useState(null);
@@ -83,19 +92,22 @@ const DashboardPage = () => {
 
 
     return (
-      <div>
+      <div style={{textAlign:'center'}}>
+        <Header/>
         <h1>Dashboard</h1>
         <p>Welcome to the Dashboard!</p>
-        <div>
-          <p>Sales Tax:${salesTax}</p>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', margin:'0 auto', width:'60%', textAlign:'center'}}>
+          <div style={box}>
+            <p>Graph?</p>
+          </div>
+          <div style={box}>
+            <p>Sales Tax:${salesTax}</p>
+          </div>
+          <div style={box}>
+            <p>Shipping Total:${shippingTotal}</p>
+          </div>
+          
         </div>
-        <div>
-          <p>Shipping Total:${shippingTotal}</p>
-        </div>
-        <div>
-          <p></p>
-        </div>
-      
         <p>Upload CSV file</p>
       <input type="file" id="file" name="file" accept=".csv"/>
       <button onClick={handleFileUpload}>Update Dashboard</button>

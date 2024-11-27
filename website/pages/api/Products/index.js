@@ -33,50 +33,41 @@ export default async function handler(req, res) {
                 res.status(500).json({ error: 'Failed to create product' }); // Error handling
             }
             break;
-        
         case 'PUT':
             try {
-                const { id, name, price, company_id } = req.body; // Expecting fields in the request body
+                const { id, name, price, company_id, image } = req.body;
                 if (!id || !name || !price || !company_id) {
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
-                // Update the product in the database
                 const updatedProduct = await sql`
                     UPDATE products
-                    SET name = ${name}, price = ${price}, company_id = ${company_id}
+                    SET name = ${name}, price = ${price}, company_id = ${company_id}, image = ${image}
                     WHERE id = ${id}
                     RETURNING *;
                 `;
 
-                res.status(200).json(updatedProduct[0]); // Respond with the updated product
+                res.status(200).json(updatedProduct[0]);
             } catch (error) {
-                res.status(500).json({ error: 'Failed to update product' }); // Error handling
+                res.status(500).json({ error: 'Failed to update product' });
             }
             break;
-
         case 'DELETE':
             try {
-                const { id } = req.body; // Expecting fields in the request body
+                const { id } = req.body;
                 if (!id) {
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
-                // Delete the product from the database
-                const deletedProduct = await sql`
+                await sql`
                     DELETE FROM products
-                    WHERE id = ${id}
-                    RETURNING *;
+                    WHERE id = ${id};
                 `;
 
-                res.status(200).json(deletedProduct[0]); // Respond with the deleted product
+                res.status(200).json({ message: 'Product deleted successfully' });
             } catch (error) {
-                res.status(500).json({ error: 'Failed to delete product' }); // Error handling
+                res.status(500).json({ error: 'Failed to delete product' });
             }
-            break;
-        
-        default:
-            res.status(405).json({ error: 'Method Not Allowed' }); // For unsupported methods
             break;
     }
 }

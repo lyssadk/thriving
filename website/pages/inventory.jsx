@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '../components/Card';
+import Header from '../components/Header';
 
 export default function inventory() {
     const [products, setProducts] = useState([]);
@@ -10,7 +11,7 @@ export default function inventory() {
     useEffect(() => {
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('/api/Product');
+            const response = await axios.get('/api/Products');
             const productsList = response.data.rows.map((product) => ({
                 id: product.id,
                 name: product.name,
@@ -41,6 +42,7 @@ export default function inventory() {
 }, []);
     return (
         <div>
+            <Header/>
             <h1>Inventory</h1>
             <p>Welcome to the Inventory!</p>
             
@@ -54,9 +56,7 @@ export default function inventory() {
                         const companyId = e.target.value;
                         if (!companyId) {
                            // If no company is selected, show all products
-                            setFilteredProducts(products);
-                            console.log(products);
-                            console.log(filteredProducts);
+                            setFilteredProducts(null);
                         } 
                         else {
                             const filteredProducts = products.filter(
@@ -74,10 +74,11 @@ export default function inventory() {
                     ))}
                 </select>
             </div>
+            { !filteredProducts && products.map((product) => (
+                    <Card key={product.id} title={product.name} content={product.price} img={product.image} />))}
             { filteredProducts && filteredProducts.map((product, index) => (
-                    <Card key={index} title={product.name} content={product.price} />))}
-            { !filteredProducts && products.map((product, index) => (
-                    <Card key={index} title={product.name} content={product.price} />))}
+                    <a href={`/product-page/${product.id}`}><Card key={index} title={product.name} content={product.price} img={product.image} /></a>))}
+            
             </div>
         </div>
     )
