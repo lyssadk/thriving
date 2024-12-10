@@ -1,14 +1,12 @@
 // pages/index.tsx
-import Link from 'next/link';
+import Layout from '../components/Layout';
 
 const LandingPage = () => {
   return (
-    <div>
+    <Layout >
       <h1>Welcome to the Landing Page</h1>
-      <Link href="/login">Login</Link>
-      <Link href="/dashboard">Dashboard</Link>
-      <Link href="/register">Register</Link>
-    </div>
+      <p> This will be content eventually.</p>
+    </Layout>
   );
 };
 

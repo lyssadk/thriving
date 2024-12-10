@@ -39,6 +39,7 @@ const formStyle = {
     marginBottom: '10px',
   };
   import { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
   
   export default function AddCompanyForm() {
     const [companyName, setCompanyName] = useState('');
@@ -89,7 +90,7 @@ const formStyle = {
     };
   
     return (
-      <div>
+      <Layout>
         <h2 style={{textAlign:'center', paddingTop: '50px'}}>Add Company</h2>
         
         {success && <p style={{ color: 'green' }}>Company added successfully!</p>}
@@ -111,7 +112,7 @@ const formStyle = {
             {loading ? 'Adding Company...' : 'Add Company'}
           </button>
         </form>
-      </div>
+      </Layout>
     );
   }
   

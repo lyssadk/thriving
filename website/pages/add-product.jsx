@@ -40,6 +40,7 @@ const successStyle = {
 };
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Layout from '../components/Layout';
 
 
 
@@ -135,7 +136,7 @@ export default function AddProductForm() {
   };
 
   return (
-    <div>
+    <Layout>
       <h2 style={{textAlign:'center', paddingTop: '50px'}}>Add Product</h2>
       
       {success && <p style={{ color: 'green' }}>Product added successfully!</p>}
@@ -202,6 +203,6 @@ export default function AddProductForm() {
           {loading ? 'Adding Product...' : 'Add Product'}
         </button>
       </form>
-    </div>
+    </Layout>
   );
 }

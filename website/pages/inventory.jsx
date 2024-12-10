@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '../components/Card';
-import Header from '../components/Header';
+import Link from 'next/link';
+import Layout from '../components/Layout';
 
 export default function inventory() {
     const [products, setProducts] = useState([]);
@@ -41,8 +42,7 @@ export default function inventory() {
     fetchCompanies();
 }, []);
     return (
-        <div>
-            <Header/>
+        <Layout>
             <h1>Inventory</h1>
             <p>Welcome to the Inventory!</p>
             
@@ -75,11 +75,11 @@ export default function inventory() {
                 </select>
             </div>
             { !filteredProducts && products.map((product) => (
-                    <Card key={product.id} title={product.name} content={product.price} img={product.image} />))}
+                   <Link href={`/product-page/${product.id}`}><Card key={product.id} title={product.name} content={product.price} img={product.image} /></Link> ))}
             { filteredProducts && filteredProducts.map((product, index) => (
-                    <a href={`/product-page/${product.id}`}><Card key={index} title={product.name} content={product.price} img={product.image} /></a>))}
+                    <Link href={`/product-page/${product.id}`}><Card key={index} title={product.name} content={product.price} img={product.image} /></Link>))}
             
             </div>
-        </div>
+        </Layout>
     )
 }

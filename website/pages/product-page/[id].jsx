@@ -4,6 +4,7 @@ import Card from '../../components/Card';
 
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import Layout from '../../components/Layout';
 
 const ProductPage = ({ product }) => {
   const router = useRouter();
@@ -19,12 +20,13 @@ const ProductPage = ({ product }) => {
   }
 
   return (
-    <div>
-        <Header/>
+    <Layout>
         <h1>Product</h1>
         <p>Welcome to the Product!</p>
         <Card title={product.name} content={product.price}/>
-      </div>
+        <button>Edit Product</button>
+        <button>Delete Product</button>
+      </Layout>
   );
 };
 
