@@ -1,6 +1,6 @@
 // pages/dashboard.js
 import { useState, useEffect } from 'react';
-import Header from '../components/Header';
+import Layout from '../components/Layout';
 
 const box = {
   border: '1px solid black',
@@ -92,8 +92,8 @@ const DashboardPage = () => {
 
 
     return (
+      <Layout>
       <div style={{textAlign:'center'}}>
-        <Header/>
         <h1>Dashboard</h1>
         <p>Welcome to the Dashboard!</p>
         <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', margin:'0 auto', width:'60%', textAlign:'center'}}>
@@ -113,6 +113,7 @@ const DashboardPage = () => {
       <button onClick={handleFileUpload}>Update Dashboard</button>
       </div>
 
+      </Layout>
     );
   };
   

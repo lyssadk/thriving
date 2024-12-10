@@ -2,6 +2,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
+import Header from '../components/Header';
+import Layout from '../components/Layout';
 
 
 const css = {
@@ -30,6 +33,7 @@ const LoginPage = () => {
   };
 
   return (
+    <Layout>
     <div style={css}>
       <h1>Login Page</h1>
       <div>
@@ -50,8 +54,9 @@ const LoginPage = () => {
         />
         <button type="submit">Login</button>
       </form>
-      <a href='/register'>Don't have an account? Register</a>
+      <Link href='/register'>Don't have an account? Register</Link>
     </div>
+    </Layout>
   );
 };
 

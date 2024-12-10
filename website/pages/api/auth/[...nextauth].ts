@@ -19,20 +19,27 @@ export const authOptions = {
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
+          scope: "openid profile email https://www.googleapis.com/auth/gmail.readonly", // Add the Gmail API scope
         },
-     },
+      },
     }),
-    
   ],
   callbacks: {
     async session({ session, token }) {
-      // Attach user ID to session object
+      // Attach the Gmail access token to the session
+      console.log('token | ', token)
+      console.log('session | ', session)
       session.user.id = token.id;
+      console.log('session.user.id | ', session.user.id)
+      session.user.accessToken = token.accessToken; // Store the access token
       return session;
     },
     async jwt({ token, account, user }) {
-      if (account && user) {
+      if (user) {
         token.id = user.id;
+      }
+      if (account) {
+        token.accessToken = account.access_token; // Store access token in JWT token
       }
       return token;
     },
@@ -67,6 +74,7 @@ async function createUser(user) {
   `
   return res.rows[0];
 }
+<<<<<<< HEAD
 
 export async function loginIsRequiredServer() {
   const session = await getServerSession(authOptions);
@@ -80,8 +88,7 @@ export function loginIsRequiredClient() {
     if (!session) router.push("/");
   }
 }
-
-
-
+=======
+>>>>>>> alyssa/main-reqs
 
 export default NextAuth(authOptions);
