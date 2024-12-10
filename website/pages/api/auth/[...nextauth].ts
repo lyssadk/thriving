@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
 import vercelPostgresAdapter from "../../../lib/vercelPostgresAdapter";
 import { sql } from '@vercel/postgres';
 
@@ -34,10 +37,6 @@ export const authOptions = {
       return token;
     },
   },
-  pages: {
-    signIn: '/auth/signin', // Custom sign-in page
-    error: '/auth/error', // Custom error page
-  },
   events: {
     async signIn(message) {
       // Check if user exists in the database, if not, create them
@@ -68,7 +67,19 @@ async function createUser(user) {
   `
   return res.rows[0];
 }
-  
+
+export async function loginIsRequiredServer() {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/");
+}
+
+export function loginIsRequiredClient() {
+  if (typeof window !== "undefined") {
+    const session = useSession();
+    const router = useRouter();
+    if (!session) router.push("/");
+  }
+}
 
 
 
