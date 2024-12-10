@@ -45,9 +45,6 @@ export default function inventory() {
         <Layout>
             <h1>Inventory</h1>
             <p>Welcome to the Inventory!</p>
-            
-            
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
             <div>
                 <label htmlFor="companyFilter">Filter by Company:</label>
                 <select
@@ -74,10 +71,13 @@ export default function inventory() {
                     ))}
                 </select>
             </div>
+            
+            <div style={{display: 'flex', flexWrap: 'wrap'}}>
+            
             { !filteredProducts && products.map((product) => (
-                   <Link href={`/product-page/${product.id}`}><Card key={product.id} title={product.name} content={product.price} img={product.image} /></Link> ))}
+                   <Link style={{color:'black', textDecoration:'none'}} href={`/product-page/${product.id}`}><Card key={product.id} title={product.name} content={product.price} img={product.image} /></Link> ))}
             { filteredProducts && filteredProducts.map((product, index) => (
-                    <Link href={`/product-page/${product.id}`}><Card key={index} title={product.name} content={product.price} img={product.image} /></Link>))}
+                    <Link style={{color:'black', textDecoration:'none'}} href={`/product-page/${product.id}`}><Card key={index} title={product.name} content={product.price} img={product.image} /></Link>))}
             
             </div>
         </Layout>

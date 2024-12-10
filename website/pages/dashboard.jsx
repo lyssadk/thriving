@@ -1,6 +1,7 @@
 // pages/dashboard.js
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import Link from 'next/link';
 
 const box = {
   border: '1px solid black',
@@ -15,6 +16,7 @@ const DashboardPage = () => {
   const [salesTax, setSalesTax] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
   const [shippingTotal, setShippingTotal] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
   useEffect(() => {
     const fileInput = document.getElementById('file');
     fileInput.addEventListener('change', (e) => {
@@ -93,26 +95,68 @@ const DashboardPage = () => {
 
     return (
       <Layout>
-      <div style={{textAlign:'center'}}>
-        <h1>Dashboard</h1>
-        <p>Welcome to the Dashboard!</p>
-        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', margin:'0 auto', width:'60%', textAlign:'center'}}>
-          <div style={box}>
-            <p>Graph?</p>
-          </div>
-          <div style={box}>
-            <p>Sales Tax:${salesTax}</p>
-          </div>
-          <div style={box}>
-            <p>Shipping Total:${shippingTotal}</p>
-          </div>
-          
+      <div style={{ textAlign: 'center' }}>
+      <h1>Dashboard</h1>
+      <p>Welcome to the Dashboard!</p>
+      <p>Here you can upload a CSV file to update the dashboard with the latest data.</p>
+      <h2>Quick Links</h2>
+      <ul style={{ listStyleType: 'none', padding: 0, color:'greenyellow' , display: 'flex', justifyContent:'center'}}>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/create-receipt" style={{ textDecoration: 'none', margin:'10px', color:'green' }}>Create Receipt
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/receipts" style={{ textDecoration: 'none', margin:'10px', color:'darkgreen' }}>View Orders
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/add-company" style={{ textDecoration: 'none', margin:'10px', color:'green' }}>Add Company
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/add-product" style={{ textDecoration: 'none', margin:'10px', color:'green' }}>Add Product
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/edit-product" style={{ textDecoration: 'none', margin:'10px', color:'orange' }}>Edit Product
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/edit-company" style={{ textDecoration: 'none', margin:'10px', color:'orange' }}>Edit Company
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/delete-product" style={{ textDecoration: 'none', margin:'10px', color:'burlywood'  }}>Delete Product
+        </Link>
+      </li>
+      <li style={{ margin: '10px 0' }}>
+        <Link href="/delete-company" style={{ textDecoration: 'none', margin:'10px', color:'burlywood' }}>Delete Company
+        </Link>
+      </li>
+      </ul>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', margin: '0 auto', width: '60%', textAlign: 'center' }}>
+      <div style={box}>
+        <p>Graph?</p>
+      </div>
+      <div>
+        <div style={box}>
+        <p>Sales Tax: ${salesTax}</p>
         </div>
-        <p>Upload CSV file</p>
-      <input type="file" id="file" name="file" accept=".csv"/>
+        <div style={box}>
+        <p>Shipping Total: ${shippingTotal}</p>
+        </div>
+        <div style={box}>
+        <p>Total Sales: ${totalSales}</p>
+        </div>
+        <div style={box}>
+        <p>Total Spent: ${totalSpent}</p>
+        </div>
+      </div>
+      </div>
+      <p>Upload CSV file</p>
+      <input type="file" id="file" name="file" accept=".csv" />
       <button onClick={handleFileUpload}>Update Dashboard</button>
       </div>
-
       </Layout>
     );
   };

@@ -53,6 +53,7 @@ export default async function handler(req, res) {
                 const receipts = await sql`SELECT * FROM receipts`;
                 res.status(200).json(receipts); // Return the receipts as a response
             } catch (error) {
+                console.log(error)
                 res.status(500).json({ error: 'Failed to fetch receipts' }); // Error handling
             }
             break;
@@ -67,12 +68,13 @@ export default async function handler(req, res) {
                 // Insert the new receipt into the database
                 const newReceipt = await sql`
                     INSERT INTO receipts (ordernumber, company, products, salestax, total, state, orderdate)
-                    VALUES (${orderNumber}, ${company}, ${products}, ${salesTax}, ${total}, ${state}, ${orderDate})
+                    VALUES (${orderNumber}, ${company}, ${JSON.stringify(products)}, ${salesTax}, ${total}, ${state}, ${orderDate})
                     RETURNING *;
                 `;
 
                 res.status(201).json(newReceipt[0]); // Respond with the newly created receipt
             } catch (error) {
+                console.log(error);
                 res.status(500).json({ error: 'Failed to create receipt' }); // Error handling
             }
             break;

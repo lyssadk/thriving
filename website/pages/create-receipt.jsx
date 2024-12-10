@@ -162,11 +162,11 @@ import Layout from '../components/Layout';
       const [orderDate, setOrderDate] = useState('');
       const [company, setCompany] = useState('');
       const [companies, setCompanies] = useState([]);
-      const [product, setProduct] = useState({ name: '', price: 0, wholesale: false, company });
+      const [product, setProduct] = useState({ name: '', price: 0, wholesale: false, company , quantity: 0});
 
       function addProduct() {
         setProducts([...products, product]);
-        setProduct({ name: '', price: 0, wholesale: false, company });
+        setProduct({ name: '', price: 0, wholesale: false, company, quantity: 0});
       }
 
       function deleteProduct(index) {
@@ -176,6 +176,7 @@ import Layout from '../components/Layout';
 
       async function submitReceipt() {
         try {
+          console.log(products);
           const res = await fetch('/api/Receipts', {
             method: 'POST',
             headers: {
