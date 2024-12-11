@@ -16,15 +16,15 @@ export default async function handler(req, res) {
         
         case 'POST':
             try {
-                const { name, price, company_id, image } = req.body; // Expecting fields in the request body
+                const { name, price, company_id, image, quantity } = req.body; // Expecting fields in the request body
                 if (!name || !price || !company_id) {
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
                 // Insert the new product into the database
                 const newProduct = await sql`
-                    INSERT INTO products (name, price, company_id, image)
-                    VALUES (${name}, ${price}, ${company_id}, ${image})
+                    INSERT INTO products (name, price, company_id, image, quantity)
+                    VALUES (${name}, ${price}, ${company_id}, ${image}, ${quantity})
                     RETURNING *;
                 `;
 
@@ -35,7 +35,7 @@ export default async function handler(req, res) {
             break;
         case 'PUT':
             try {
-                const { id, name, price, company_id, image } = req.body;
+                const { id, name, price, company_id, image, quantity } = req.body;
                 if (!id || !name || !price || !company_id) {
                     console.log(req.body);
                     return res.status(400).json({ error: 'Missing required fields' });
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 
                 const updatedProduct = await sql`
                     UPDATE products
-                    SET name = ${name}, price = ${price}, company_id = ${company_id}, image = ${image}
+                    SET name = ${name}, price = ${price}, company_id = ${company_id}, image = ${image}, quantity = ${quantity}
                     WHERE id = ${id}
                     RETURNING *;
                 `;

@@ -10,6 +10,7 @@ const ProductPage = ({ product }) => {
     name: product.name,
     price: product.price,
     company_id: product.company_id, // Add company to the form data
+    quantity: product.quantity,
   });
 
   const handleChange = (e) => {
@@ -31,13 +32,13 @@ const ProductPage = ({ product }) => {
       });
 
       if (!res.ok) {
-        
         throw new Error(`HTTP error! status: ${res.status}`);
       }
+      alert('Product updated');
+      console.log('Product updated:',res.status);
 
-      const updatedProduct = await res.json();
-      console.log('Product updated:', updatedProduct);
     } catch (error) {
+      console.log(formData);
       console.error('Error updating product:', error);
     }
   };
@@ -94,6 +95,10 @@ const ProductPage = ({ product }) => {
             value={formData.price}
             onChange={handleChange}
           />
+        </div>
+        <div>
+          <label>Quantity:</label>
+          <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} />
         </div>
         <button type="button" onClick={handleEdit}>Edit Product</button>
         <button type="button" onClick={handleDelete}>Delete Product</button>

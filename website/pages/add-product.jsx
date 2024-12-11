@@ -53,6 +53,7 @@ export default function AddProductForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [quantity, setQuantity] = useState('');
 
   function convertToBase64(e) {
       const files = e.target.files;
@@ -109,6 +110,7 @@ export default function AddProductForm() {
       price: parseFloat(price),
       company_id: parseInt(companyId),
       image: productPic,
+      quantity: parseInt(quantity),
     };
     console.log(productData);
     try {
@@ -127,6 +129,7 @@ export default function AddProductForm() {
       setName('');
       setPrice('');
       setCompanyId('');
+      setQuantity('');
     } catch (err) {
       setError(err.message); // Handle errors (e.g., network or validation errors)
       console.log(error);
@@ -197,6 +200,17 @@ export default function AddProductForm() {
               </option>
             ))} 
           </select>
+        </div>
+        <div>
+          <label htmlFor="quantity">Quantity:</label>
+          <input style={inputStyle}
+            type="number"
+            id="quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            required
+            min="0"
+          />
         </div>
 
         <button style={buttonStyle} type="submit" disabled={loading}>
