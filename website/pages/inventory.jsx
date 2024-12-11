@@ -8,6 +8,15 @@ export default function inventory() {
     const [products, setProducts] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);   
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+        const filtered = products.filter((product) =>
+            product.name.toLowerCase().includes(e.target.value.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+    };
 
     useEffect(() => {
     const fetchProducts = async () => {
@@ -43,43 +52,74 @@ export default function inventory() {
 }, []);
     return (
         <Layout>
-            <h1>Inventory</h1>
-            <p>Welcome to the Inventory!</p>
-            <div>
-                <label htmlFor="companyFilter">Filter by Company:</label>
-                <select
-                    id="companyFilter"
-                    onChange={(e) => {
-                        const companyId = e.target.value;
-                        if (!companyId) {
-                           // If no company is selected, show all products
-                            setFilteredProducts(null);
-                        } 
-                        else {
-                            const filteredProducts = products.filter(
-                                (product) => product.company_id === parseInt(companyId)
-                            );
-                            setFilteredProducts(filteredProducts);
-                        }
-                    }}
-                >
-                    <option value="">All Companies</option>
-                    {companies.map((company) => (
-                        <option key={company.id} value={company.id}>
-                            {company.company_name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            
-            <div style={{display: 'flex', flexWrap: 'wrap'}}>
-            
-            { !filteredProducts && products.map((product) => (
-                   <Link style={{color:'black', textDecoration:'none'}} href={`/product-page/${product.id}`}><Card key={product.id} title={product.name} content={product.price} img={product.image} /></Link> ))}
-            { filteredProducts && filteredProducts.map((product, index) => (
-                    <Link style={{color:'black', textDecoration:'none'}} href={`/product-page/${product.id}`}><Card key={index} title={product.name} content={product.price} img={product.image} /></Link>))}
-            
-            </div>
-        </Layout>
+        <h1>Inventory</h1>
+        <p>Welcome to the Inventory!</p>
+        <div>
+            <label htmlFor="companyFilter">Filter by Company:</label>
+            <select
+                id="companyFilter"
+                onChange={(e) => {
+                    const companyId = e.target.value;
+                    if (!companyId) {
+                        setFilteredProducts(null);
+                    } else {
+                        const filteredProducts = products.filter(
+                            (product) => product.company_id === parseInt(companyId)
+                        );
+                        setFilteredProducts(filteredProducts);
+                    }
+                }}
+            >
+                <option value="">All Companies</option>
+                {companies.map((company) => (
+                    <option key={company.id} value={company.id}>
+                        {company.company_name}
+                    </option>
+                ))}
+            </select>
+        </div>
+        <div>
+            <label htmlFor="search">Search Products:</label>
+            <input
+                type="text"
+                id="search"
+                value={searchTerm}
+                onChange={handleSearch}
+                placeholder="Search by product name"
+            />
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {!filteredProducts &&
+                products.map((product) => (
+                    <Link
+                        style={{ color: 'black', textDecoration: 'none' }}
+                        href={`/product-page/${product.id}`}
+                    >
+                        <Card
+                            key={product.id}
+                            title={product.name}
+                            content={product.price}
+                            img={product.image}
+                        />
+                    </Link>
+                ))}
+            {filteredProducts &&
+                filteredProducts.map((product, index) => (
+                    <Link
+                        style={{ color: 'black', textDecoration: 'none' }}
+                        href={`/product-page/${product.id}`}
+                    >
+                        <Card
+                            key={index}
+                            title={product.name}
+                            content={product.price}
+                            img={product.image}
+                        />
+                    </Link>
+                ))}
+        </div>
+    </Layout>
     )
 }
+
+
