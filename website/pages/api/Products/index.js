@@ -37,6 +37,7 @@ export default async function handler(req, res) {
             try {
                 const { id, name, price, company_id, image } = req.body;
                 if (!id || !name || !price || !company_id) {
+                    console.log(req.body);
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
