@@ -35,11 +35,11 @@ export default function Receipts() {
     const handleFilterDate = (e) => {
         setFilterDate(e.target.value);
     };
-
     const filteredResults = receipts.filter((receipt) => {
+        const formattedOrderDate = new Date(receipt.orderDate).toISOString().split('T')[0];
         return (
-            (searchTerm === '' || receipt.orderNumber.includes(searchTerm)) &&
-            (filterDate === '' || receipt.orderDate === filterDate)
+            (searchTerm === '' || receipt.orderNumber.toString().includes(searchTerm)) &&
+            (filterDate === '' || formattedOrderDate === filterDate)
         );
     });
 
