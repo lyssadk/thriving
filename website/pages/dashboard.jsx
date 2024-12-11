@@ -35,6 +35,18 @@ const DashboardPage = () => {
   }
   , []);
 
+  fetch(`/api/dashboard?year=${year}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setSalesTax(data[0].total_tax);
+        setTotalSales(data[0].total_gross_sales);
+        setTotalSpent(data[0].total_collected);
+      })
+      .catch(error => {
+        console.error('Error fetching dashboard data:', error);
+      });
+
   function handleFileUpload() {
     // Get the file selected by the user from the input element
     const fileInput = document.getElementById('file');
@@ -47,6 +59,8 @@ const DashboardPage = () => {
       // If no file is selected, show an alert or handle the case accordingly
       alert('Please select a CSV file to upload.');
     }
+
+    // get total sales tax, total collected and total gross sales for each year from the /api/dashboard endpoint
   }
   
   function updateDashboard(csvFile) {
@@ -120,17 +134,17 @@ const DashboardPage = () => {
           console.error('Error adding transaction:', error);
         });
         
-        // If tax is a valid number, add it to salesTax
-        if (!isNaN(parseFloat(newtax))) {
-          salesTax += parseFloat(newtax);
-        } else {
-          console.log(tax)
-          console.warn(`Skipping invalid tax value at line ${i + 1}`);
-        }
+      //   // If tax is a valid number, add it to salesTax
+      //   if (!isNaN(parseFloat(newtax))) {
+      //     salesTax += parseFloat(newtax);
+      //   } else {
+      //     console.log(tax)
+      //     console.warn(`Skipping invalid tax value at line ${i + 1}`);
+      //   }
       }
   
       // Update the dashboard with the total sales tax
-      setSalesTax(salesTax.toFixed(2));
+      // setSalesTax(salesTax.toFixed(2));
     };
   
     reader.readAsText(csvFile); // Read the CSV file as text
@@ -198,10 +212,10 @@ const DashboardPage = () => {
           <p>Shipping Total: ${shippingTotal}</p>
           </div>
           <div style={box}>
-          <p>Total Sales: ${totalSales}</p>
+          <p>Total Gross Sales: ${totalSales}</p>
           </div>
           <div style={box}>
-          <p>Total Spent: ${totalSpent}</p>
+          <p>Total Net Sales: ${totalSpent}</p>
           </div>
         </div>
         </div>
