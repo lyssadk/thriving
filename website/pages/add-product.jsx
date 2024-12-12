@@ -41,6 +41,7 @@ const successStyle = {
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Layout from '../components/Layout';
+import { redirect } from 'next/dist/server/api-utils';
 
 
 
@@ -114,7 +115,7 @@ export default function AddProductForm() {
     };
     console.log(productData);
     try {
-      const res = await fetch('/api/Product', {
+      const res = await fetch('/api/Products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,12 +125,9 @@ export default function AddProductForm() {
 
       const data = await res.json();
       if (!res.ok || res.status !== 200 || res.status !== 201) {throw new Error('Failed to create product');}
-      console.log(data)
       setSuccess(true); // Indicate successful product creation
-      setName('');
-      setPrice('');
-      setCompanyId('');
-      setQuantity('');
+      alert('Product added successfully!');
+      redirect('/inventory');
     } catch (err) {
       setError(err.message); // Handle errors (e.g., network or validation errors)
       console.log(error);

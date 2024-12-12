@@ -1,5 +1,6 @@
 // pages/api/receipts/index.js
 import { sql } from '@vercel/postgres';
+import { redirect } from 'next/dist/server/api-utils';
  
 // export default async function data(req, res) {
 //     const data = await sql`SELECT * FROM receipts`;
@@ -62,6 +63,7 @@ export default async function handler(req, res) {
             try {
                 const { orderNumber, company, products, salesTax, total, state, orderDate } = req.body; // Expecting fields in the request body
                 if (!orderNumber  || !company || !products || !salesTax || !total || !state || !orderDate) {
+                    console.log(req.body)
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
@@ -73,43 +75,48 @@ export default async function handler(req, res) {
                 `;
 
                 res.status(201).json(newReceipt[0]); // Respond with the newly created receipt
+                alert('Receipt created successfully');
             } catch (error) {
-                console.log(error);
                 res.status(500).json({ error: 'Failed to create receipt' }); // Error handling
             }
             break;
         case 'PUT':
             try {
-                const { id, orderNumber, company, products, salesTax, total, state, orderDate } = req.body;
-                if (!id || !orderNumber  || !company || !products || !salesTax || !total || !state || !orderDate) {
+                const { orderNumber, company, products, salesTax, total, state, orderDate } = req.body;
+                if (!orderNumber  || !company || !products || !salesTax || !total || !state || !orderDate) {
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
                 const updatedReceipt = await sql`
                     UPDATE receipts
-                    SET orderNumber = ${orderNumber}, company = ${company}, products = ${products}, salesTax = ${salesTax}, total = ${total}, state = ${state}, orderDate = ${orderDate}
-                    WHERE id = ${id}
+                    SET ordernumber = ${orderNumber}, company = ${company}, products = ${JSON.stringify(products)}, salesTax = ${salesTax}, total = ${total}, state = ${state}, orderDate = ${orderDate}
+                    WHERE ordernumber = ${orderNumber}
                     RETURNING *;
                 `;
 
                 res.status(200).json(updatedReceipt[0]);
+                alert('Receipt updated successfully');
+                redirect('/receipts');
             } catch (error) {
                 res.status(500).json({ error: 'Failed to update receipt' });
+                alert('Failed to update receipt');
             }
             break;
         case 'DELETE':
             try {
-                const { id } = req.body;
-                if (!id) {
+                const { orderNumber } = req.body;
+                if (!orderNumber) {
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
                 await sql`
                     DELETE FROM receipts
-                    WHERE id = ${id};
+                    WHERE ordernumber = ${orderNumber};
                 `;
 
                 res.status(200).json({ message: 'Receipt deleted successfully' });
+                alert('Receipt deleted successfully');
+                redirect('/receipts');
             } catch (error) {
                 res.status(500).json({ error: 'Failed to delete receipt' });
             }

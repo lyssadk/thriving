@@ -55,14 +55,14 @@ const Button = styled.button`
 const UpdateReceiptPage = ({ receipt }) => {
     const router = useRouter();
     const { id } = router.query;
+    console.log(receipt)
     const [formData, setFormData] = useState({
-        id: receipt.id,
-        company: receipt.company_id,
-        salesTax: receipt.sales_tax,
+        company: receipt.company,
+        salesTax: receipt.salestax,
         total: receipt.total,
         state: receipt.state,
-        orderNumber: receipt.order_number,
-        orderDate: receipt.order_date,
+        orderNumber: receipt.ordernumber,
+        orderDate: receipt.orderdate,
         products: receipt.products || [],
     });
 
@@ -83,7 +83,7 @@ const UpdateReceiptPage = ({ receipt }) => {
                 },
                 body: JSON.stringify(formData),
             });
-
+            console.log(res)
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
@@ -102,9 +102,9 @@ const UpdateReceiptPage = ({ receipt }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: formData.id }),
+                body: JSON.stringify({ orderNumber: formData.orderNumber }),
             });
-
+            console.log(res)
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);
             }
@@ -128,12 +128,12 @@ const UpdateReceiptPage = ({ receipt }) => {
         <Layout>
             <FormContainer>
                 <form>
-                    <input type="hidden" name="id" value={formData.id} />
                     <FormGroup>
-                        <Label>Company:</Label>
-                        <Select name="company" value={formData.company} onChange={handleChange}>
-                            {/* Populate with company options */}
-                        </Select>
+                        <Input
+                            type="hidden"
+                            name="company"
+                            value={formData.company}
+                        />
                     </FormGroup>
                     <FormGroup>
                         <Label>Sales Tax:</Label>
@@ -180,6 +180,13 @@ const UpdateReceiptPage = ({ receipt }) => {
                             onChange={handleChange}
                         />
                     </FormGroup>
+                    <FormGroup>
+                        <Input
+                            type="hidden"
+                            name="products"
+                            value={JSON.stringify(formData.products)}
+                        />
+                    </FormGroup>
                     <Button type="button" onClick={handleEdit}>Edit Receipt</Button>
                     <Button type="button" onClick={handleDelete}>Delete Receipt</Button>
                 </form>
@@ -193,14 +200,17 @@ export async function getServerSideProps({ params }) {
 
     try {
         const { rows } = await fetchReceiptById(id);
-
+        console.log(rows)
         if (rows.length === 0) {
             return { notFound: true };
         }
 
         return {
             props: {
-                receipt: rows[0],
+                receipt: {
+                    ...rows[0],
+                    orderdate: rows[0].orderdate.toISOString(),
+                },
             },
         };
     } catch (error) {
@@ -212,11 +222,10 @@ export async function getServerSideProps({ params }) {
 async function fetchReceiptById(id) {
 
     const res = await sql`
-        SELECT id, company_id, sales_tax, total, state, order_number, order_date, products
+        SELECT company, salestax, total, state, ordernumber, orderdate, products
         FROM receipts
-        WHERE id = ${id}
+        WHERE ordernumber = ${id}
     `;
-
     return res;
 }
 

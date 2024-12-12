@@ -249,7 +249,7 @@ import Layout from '../components/Layout';
                 <Input type="number" name="salesTax" value={salesTax} onChange={(e) => setSalesTax(parseFloat(e.target.value))} />
               </FormGroup>
               <FormGroup>
-                <Label>Shipping Total:</Label>
+                <Label>Total:</Label>
                 <Input type="number" name="total" value={total} onChange={(e) => setTotal(parseFloat(e.target.value))} />
               </FormGroup>
               <FormGroup>

@@ -66,10 +66,10 @@ export default function Receipts() {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {filteredResults.map((receipt) => (
-                    <Link style={{color:'black', textDecoration:'none', boxShadow:'5px 5px 10px grey', borderRadius:'12px', padding:'20px', margin:'100px'}} href={`/edit-receipt/${receipt.ordernumber}`} key={receipt.orderNumber}>
+                    <Link style={{color:'black', textDecoration:'none', boxShadow:'5px 5px 10px grey', borderRadius:'12px', padding:'20px', margin:'100px'}} href={`/update-receipt/${receipt.orderNumber}`} key={receipt.orderNumber}>
                         <div className="receipt-card">
                             <h2>Order Number: {receipt.orderNumber}</h2>
-                            <p>Order Date: {receipt.orderDate}</p>
+                            <p>Order Date: {new Date(receipt.orderDate).toISOString().split('T')[0]}</p>
                             <p>Total Amount: ${receipt.total}</p>
                         </div>
                     </Link>
