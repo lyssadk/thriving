@@ -187,6 +187,9 @@ const DashboardPage = () => {
         <li style={listItemStyle}>
           <Link href="/delete-company" style={{ ...linkStyle, color: 'burlywood' }}>Delete Company</Link>
         </li>
+        <li style={listItemStyle}>
+          <Link href="/email" style={{ ...linkStyle, color: 'blue' }}>Email Fetcher</Link>
+        </li>
         </ul>
         <div style={containerStyle}>
           <div>

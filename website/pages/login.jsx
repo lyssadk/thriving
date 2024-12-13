@@ -3,9 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import Header from '../components/Header';
 import Layout from '../components/Layout';
-
 
 const css = {
   display: 'flex',

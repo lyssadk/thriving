@@ -1,15 +1,15 @@
 import Link from "next/link"
+import { useSession, signIn, signOut } from "next-auth/react"
+import LoginButton from "./login-btn"
 
 export default function Header() {
     return (
         <nav>
             <ul>
-                {/* <li><Link href='/add-product'>Add Product</Link></li>
-                <li><Link href='/add-company'>Add Company</Link></li> */}
+                <li><Link href='/'>Landing Page</Link></li>
                 <li><Link href='/inventory'>Inventory</Link></li>
                 <li><Link href='/dashboard'>Dashboard</Link></li>
-                <li><Link href='/login'>Login</Link></li>
-                <li><Link href='/'>Landing Page</Link></li>
+                 <LoginButton />
             </ul>
             <style jsx>{`
                 nav {

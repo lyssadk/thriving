@@ -156,6 +156,7 @@ import Layout from '../components/Layout';
     export default function CreateReceiptForm() {
       const [products, setProducts] = useState([]);
       const [salesTax, setSalesTax] = useState(0);
+      const [shipping, setShipping] = useState(0);
       const [total, setTotal] = useState(0);
       const [state, setState] = useState('');
       const [orderNumber, setOrderNumber] = useState(0);
@@ -190,6 +191,7 @@ import Layout from '../components/Layout';
               total,
               state,
               orderDate,
+              shipping
             }),
           });
           if (!res.ok) throw new Error('Failed to submit receipt');
@@ -247,6 +249,10 @@ import Layout from '../components/Layout';
               <FormGroup>
                 <Label>Sales Tax:</Label>
                 <Input type="number" name="salesTax" value={salesTax} onChange={(e) => setSalesTax(parseFloat(e.target.value))} />
+              </FormGroup>
+              <FormGroup>
+                <Label>Shipping Total:</Label>
+                <Input type="number" name="shipping" value={shipping} onChange={(e) => setShipping(parseFloat(e.target.value))} />
               </FormGroup>
               <FormGroup>
                 <Label>Total:</Label>

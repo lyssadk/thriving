@@ -1,12 +1,12 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import vercelPostgresAdapter from "../../../lib/vercelPostgresAdapter";
+// import vercelPostgresAdapter from "../../../lib/vercelPostgresAdapter";
 import { sql } from '@vercel/postgres';
 
 export const authOptions = {
   debug: true,
   secret: process.env.NEXTAUTH_SECRET as string,
-  adapter: vercelPostgresAdapter(),
+  // adapter: vercelPostgresAdapter(),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -21,29 +21,41 @@ export const authOptions = {
       },
     }),
   ],
+  // callbacks: {
+  //   async session({ session, token }) {
+  //     // Attach the Gmail access token to the session
+  //     console.log('token | ', token)
+  //     console.log('session | ', session)
+  //     session.user.id = token.id;
+  //     console.log('session.user.id | ', session.user.id)
+  //     session.user.accessToken = token.accessToken; // Store the access token
+  //     return session;
+  //   },
+  //   async jwt({ token, account, user }) {
+  //     if (user) {
+  //       token.id = user.id;
+  //     }
+  //     if (account) {
+  //       token.accessToken = account.access_token; // Store access token in JWT token
+  //     }
+  //     return token;
+  //   },
+  // },
   callbacks: {
-    async session({ session, token }) {
-      // Attach the Gmail access token to the session
-      console.log('token | ', token)
-      console.log('session | ', session)
+    async session({ session, token, user }) {
       session.user.id = token.id;
-      console.log('session.user.id | ', session.user.id)
-      session.user.accessToken = token.accessToken; // Store the access token
+      session.accessToken = token.accessToken;
       return session;
     },
-    async jwt({ token, account, user }) {
+    async jwt({ token, user, account, profile, isNewUser }) {
       if (user) {
         token.id = user.id;
       }
       if (account) {
-        token.accessToken = account.access_token; // Store access token in JWT token
+        token.accessToken = account.access_token;
       }
       return token;
     },
-  },
-  pages: {
-    signIn: '/auth/signin', // Custom sign-in page
-    error: '/auth/error', // Custom error page
   },
   events: {
     async signIn(message) {

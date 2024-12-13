@@ -64,6 +64,7 @@ const UpdateReceiptPage = ({ receipt }) => {
         orderNumber: receipt.ordernumber,
         orderDate: receipt.orderdate,
         products: receipt.products || [],
+        shipping: receipt.shipping,
     });
 
     const handleChange = (e) => {
@@ -145,6 +146,15 @@ const UpdateReceiptPage = ({ receipt }) => {
                         />
                     </FormGroup>
                     <FormGroup>
+                        <Label>Shipping:</Label>
+                        <Input
+                            type="number"
+                            name="shipping"
+                            value={formData.shipping}
+                            onChange={handleChange}
+                        />
+                    </FormGroup>
+                    <FormGroup>
                         <Label>Total:</Label>
                         <Input
                             type="number"
@@ -222,7 +232,7 @@ export async function getServerSideProps({ params }) {
 async function fetchReceiptById(id) {
 
     const res = await sql`
-        SELECT company, salestax, total, state, ordernumber, orderdate, products
+        SELECT company, salestax, total, state, ordernumber, orderdate, products, shipping
         FROM receipts
         WHERE ordernumber = ${id}
     `;

@@ -61,16 +61,17 @@ export default async function handler(req, res) {
         
         case 'POST':
             try {
-                const { orderNumber, company, products, salesTax, total, state, orderDate } = req.body; // Expecting fields in the request body
-                if (!orderNumber  || !company || !products || !salesTax || !total || !state || !orderDate) {
+                const { orderNumber, company, products, salesTax, total, state, orderDate, shipping } = req.body; // Expecting fields in the request body
+                if (!orderNumber  || !company || !products || !total  || !orderDate) {
                     console.log(req.body)
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
+                console.log(req.body)
 
                 // Insert the new receipt into the database
                 const newReceipt = await sql`
-                    INSERT INTO receipts (ordernumber, company, products, salestax, total, state, orderdate)
-                    VALUES (${orderNumber}, ${company}, ${JSON.stringify(products)}, ${salesTax}, ${total}, ${state}, ${orderDate})
+                    INSERT INTO receipts (ordernumber, company, products, salestax, total, state, orderdate, shipping)
+                    VALUES (${orderNumber}, ${company}, ${JSON.stringify(products)}, ${salesTax}, ${total}, ${state}, ${orderDate}, ${shipping})
                     RETURNING *;
                 `;
 
