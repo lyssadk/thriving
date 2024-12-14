@@ -201,9 +201,6 @@ const DashboardPage = () => {
           <div style={box}>
           <p>Total Net Sales: ${totalSpent}</p>
           </div>
-          <div style={box}>
-          <p>Total Spent: ${totalSpent - 100}</p>
-          </div>
         </div>
         </div>
         <p>Upload CSV file</p>

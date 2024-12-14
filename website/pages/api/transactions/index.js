@@ -23,11 +23,11 @@ export default async function handler(req, res) {
                 // Insert the new transaction into the database
                 const newTransaction = await sql`
                     INSERT INTO transactions (date, gross_sales, tax, total_collected, transaction_id)
-                    VALUES (${date}, ${gross_sales}, ${tax}, ${total_collected}, ${transaction_id})
+                    VALUES (${date}, ${parseFloat(gross_sales)}, ${parseFloat(tax)}, ${parseFloat(total_collected)}, ${transaction_id})
                     RETURNING *;
                 `;
-
-                res.status(201).json(newTransaction[0]); // Respond with the newly created transaction
+                
+                res.status(201).json('Created Transaction', newTransaction); // Respond with the newly created transaction
             } catch (error) {
                 res.status(500).json({ error: 'Failed to create transaction' }); // Error handling
             }
