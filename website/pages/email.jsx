@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react"
 import { useState } from 'react';
 import Layout from "../components/Layout";
-import { FormContainer, FormGroup, Label, Input, ProductList, ProductItem, DeleteButton } from "../components/styleDivs";
+import { FormContainer, FormGroup, Label, Input, ProductList, ProductItem, DeleteButton, Button } from "../components/styleDivs";
 
 export default function Email() {
 //   const { data } = useSession()'
@@ -11,6 +11,53 @@ export default function Email() {
   
   if (session) {
     accessToken = session?.accessToken;
+  }
+
+  const [products, setProducts] = useState([]);
+  const [salesTax, setSalesTax] = useState(0);
+  const [shipping, setShipping] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [state, setState] = useState('');
+  const [orderNumber, setOrderNumber] = useState(0);
+  const [orderDate, setOrderDate] = useState('');
+  const [company, setCompany] = useState('');
+  const [companies, setCompanies] = useState([]);
+  const [product, setProduct] = useState({ name: '', price: 0, wholesale: false, company , quantity: 0});
+
+  function addProduct() {
+    setProducts([...products, product]);
+    setProduct({ name: '', price: 0, wholesale: false, company, quantity: 0});
+  }
+
+  function deleteProduct(index) {
+    const newProducts = products.filter((_, i) => i !== index);
+    setProducts(newProducts);
+  }
+
+  async function submitReceipt(receipt) {
+    console.log(receipt);
+    try {
+      const res = await fetch('/api/Receipts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderNumber: receipt.orderNumber,
+          company : receipt.company,
+          products : receipt.products,
+          salesTax : receipt.salesTax,
+          total : receipt.total,
+          state : receipt.state,
+          orderDate : receipt.orderDate,
+          shipping : receipt.shipping
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to submit receipt');
+      alert('Receipt submitted successfully');
+    } catch (err) {
+      alert(err.message);
+    }
   }
 
 
@@ -39,7 +86,11 @@ export default function Email() {
 
             {receipts.map((receipt, index) => (
                 <FormContainer key={index}>
-                    <form>
+                    <form onSubmit={(e) => { e.preventDefault(); console.log(receipt); submitReceipt(receipt); }}>
+                        <FormGroup>
+                            <Label>Receipt Company:</Label>
+                            <Input type="text" value={receipt.company} />
+                        </FormGroup>
                         <FormGroup>
                             <Label>Receipt Total:</Label>
                             <Input type="number" value={receipt.total} />
@@ -74,6 +125,7 @@ export default function Email() {
                                 </ProductItem>
                             ))}
                         </ProductList>
+                       <Button type="submit">Add Receipt</Button>
                     </form>
                 </FormContainer>
             ))}

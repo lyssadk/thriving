@@ -27,14 +27,14 @@ export default function inventory() {
     const fetchProducts = async () => {
         try {
             const response = await axios.get('/api/Products');
-            const productsList = response.data.rows.map((product) => ({
+            const productsList = response.data.rows ? response.data.rows.map((product) => ({
                 id: product.id,
                 name: product.name,
                 price: product.price,
                 image: product.image,
                 company_id: product.company_id,
                 quantity: product.quantity
-            }));
+            })) : [];
             console.log(productsList)
             setProducts(productsList);
         } catch (error) {
@@ -43,11 +43,13 @@ export default function inventory() {
     };
     const fetchCompanies = async () => {
     try {
+        console.log("Fetching companies")
         const response = await axios.get('/api/companies');
-        const companiesList = response.data.rows.map((company) => ({
+        console.log(response)
+        const companiesList = response.data.rows ? response.data.rows.map((company) => ({
             id: company.id,
             company_name: company.company_name,
-        }));
+        })) : [];
         setCompanies(companiesList);
     } catch (error) {
         console.error('Error fetching companies:', error);

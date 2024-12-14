@@ -71,13 +71,14 @@ export default async function handler(req, res) {
                 // Insert the new receipt into the database
                 const newReceipt = await sql`
                     INSERT INTO receipts (ordernumber, company, products, salestax, total, state, orderdate, shipping)
-                    VALUES (${orderNumber}, ${company}, ${JSON.stringify(products)}, ${salesTax}, ${total}, ${state}, ${orderDate}, ${shipping})
+                    VALUES (${orderNumber}, ${company}, ${JSON.stringify(products)}, ${salesTax? salesTax : 0}, ${total}, ${state ? state : 'NA'}, ${orderDate}, ${shipping})
                     RETURNING *;
                 `;
-
+                console.log(res)
                 res.status(201).json(newReceipt[0]); // Respond with the newly created receipt
                 alert('Receipt created successfully');
             } catch (error) {
+                console.log(error)
                 res.status(500).json({ error: 'Failed to create receipt' }); // Error handling
             }
             break;
