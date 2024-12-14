@@ -31,6 +31,7 @@ export const config = {
     '/add-company/:path*',
     '/company/:path*',
     '/company/company-links/:path*',
+    '/api/shipping/:path*',
   ]
 }
 

@@ -1,5 +1,5 @@
 // pages/dashboard.js
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import BarChart from '../components/BarChart';
@@ -46,6 +46,18 @@ const DashboardPage = () => {
       })
       .catch(error => {
         console.error('Error fetching dashboard data:', error);
+      });
+  }, [year]);
+
+  useEffect(() => {
+    fetch(`/api/shipping?year=${year}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setShippingTotal(data[0].total_shipping_cost);
+      })
+      .catch(error => {
+        console.error('Error fetching shipping data:', error);
       });
   }, [year]);
 
