@@ -1,4 +1,9 @@
 // components/AddProductForm.js
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Layout from '../../components/Layout';
+import { redirect } from 'next/dist/server/api-utils';
+
 const formStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -38,9 +43,6 @@ const successStyle = {
   color: 'green',
   marginBottom: '10px',
 };
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-
 
 
 export default function AddProductForm() {
@@ -52,6 +54,7 @@ export default function AddProductForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [quantity, setQuantity] = useState('');
 
   function convertToBase64(e) {
       const files = e.target.files;
@@ -108,10 +111,11 @@ export default function AddProductForm() {
       price: parseFloat(price),
       company_id: parseInt(companyId),
       image: productPic,
+      quantity: parseInt(quantity),
     };
     console.log(productData);
     try {
-      const res = await fetch('/api/Product', {
+      const res = await fetch('/api/Products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,11 +125,9 @@ export default function AddProductForm() {
 
       const data = await res.json();
       if (!res.ok || res.status !== 200 || res.status !== 201) {throw new Error('Failed to create product');}
-      console.log(data)
       setSuccess(true); // Indicate successful product creation
-      setName('');
-      setPrice('');
-      setCompanyId('');
+      alert('Product added successfully!');
+      redirect('/inventory');
     } catch (err) {
       setError(err.message); // Handle errors (e.g., network or validation errors)
       console.log(error);
@@ -135,7 +137,7 @@ export default function AddProductForm() {
   };
 
   return (
-    <div>
+    <Layout>
       <h2 style={{textAlign:'center', paddingTop: '50px'}}>Add Product</h2>
       
       {success && <p style={{ color: 'green' }}>Product added successfully!</p>}
@@ -197,11 +199,22 @@ export default function AddProductForm() {
             ))} 
           </select>
         </div>
+        <div>
+          <label htmlFor="quantity">Quantity:</label>
+          <input style={inputStyle}
+            type="number"
+            id="quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            required
+            min="0"
+          />
+        </div>
 
         <button style={buttonStyle} type="submit" disabled={loading}>
           {loading ? 'Adding Product...' : 'Add Product'}
         </button>
       </form>
-    </div>
+    </Layout>
   );
 }

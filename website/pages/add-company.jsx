@@ -39,6 +39,7 @@ const formStyle = {
     marginBottom: '10px',
   };
   import { useState, useEffect } from 'react';
+import Layout from '../components/Layout';
   
   export default function AddCompanyForm() {
     const [companyName, setCompanyName] = useState('');
@@ -80,16 +81,16 @@ const formStyle = {
         console.log(data)
         setSuccess(true); // Indicate successful product creation
         setCompanyName('');
+        alert('Company added successfully');
       } catch (err) {
         setError(err.message); // Handle errors (e.g., network or validation errors)
-        console.log(error);
       } finally {
         setLoading(false);
       }
     };
   
     return (
-      <div>
+      <Layout>
         <h2 style={{textAlign:'center', paddingTop: '50px'}}>Add Company</h2>
         
         {success && <p style={{ color: 'green' }}>Company added successfully!</p>}
@@ -111,7 +112,7 @@ const formStyle = {
             {loading ? 'Adding Company...' : 'Add Company'}
           </button>
         </form>
-      </div>
+      </Layout>
     );
   }
   
