@@ -113,9 +113,9 @@ const DashboardPage = () => {
         }
         // Create a new transaction object
         const transaction = {
-          tax: parseFloat(newtax),
-          gross_sales: parseFloat(newGrossSales),
-          total_collected: parseFloat(newNetSales),
+          tax: parseFloat(newtax) || 0,
+          gross_sales: parseFloat(newGrossSales) || 0,
+          total_collected: parseFloat(newNetSales) || 0,
           date: date,
           transaction_id: transaction_id
         };
