@@ -23,7 +23,12 @@ export const config = {
     '/api/Receipts/:path*', 
     '/api/scrapeEmail', 
     '/api/dashboard/:path*', 
-    '/api/sales/:path*'
+    '/api/sales/:path*',
+    '/api/Products/:path*',
+    '/api/companies/:path*',
+    '/inventory/:path*',
+    '/product-page/add-product/:path*',
+    '/add-company/:path*',
   ]
 }
 
