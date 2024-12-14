@@ -1,4 +1,9 @@
 // components/AddProductForm.js
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Layout from '../../components/Layout';
+import { redirect } from 'next/dist/server/api-utils';
+
 const formStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -38,11 +43,6 @@ const successStyle = {
   color: 'green',
   marginBottom: '10px',
 };
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Layout from '../components/Layout';
-import { redirect } from 'next/dist/server/api-utils';
-
 
 
 export default function AddProductForm() {

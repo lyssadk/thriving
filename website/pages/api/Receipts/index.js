@@ -1,6 +1,6 @@
 // pages/api/receipts/index.js
 import { sql } from '@vercel/postgres';
-import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
  
 // export default async function data(req, res) {
 //     const data = await sql`SELECT * FROM receipts`;
@@ -85,6 +85,7 @@ export default async function handler(req, res) {
             try {
                 const { orderNumber, company, products, salesTax, total, state, orderDate } = req.body;
                 if (!orderNumber  || !company || !products || !salesTax || !total || !state || !orderDate) {
+                    console.log(req.body)
                     return res.status(400).json({ error: 'Missing required fields' });
                 }
 
@@ -96,11 +97,9 @@ export default async function handler(req, res) {
                 `;
 
                 res.status(200).json(updatedReceipt[0]);
-                alert('Receipt updated successfully');
-                redirect('/receipts');
             } catch (error) {
+                console.log(error)
                 res.status(500).json({ error: 'Failed to update receipt' });
-                alert('Failed to update receipt');
             }
             break;
         case 'DELETE':

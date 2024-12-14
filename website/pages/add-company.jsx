@@ -81,9 +81,9 @@ import Layout from '../components/Layout';
         console.log(data)
         setSuccess(true); // Indicate successful product creation
         setCompanyName('');
+        alert('Company added successfully');
       } catch (err) {
         setError(err.message); // Handle errors (e.g., network or validation errors)
-        console.log(error);
       } finally {
         setLoading(false);
       }

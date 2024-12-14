@@ -35,10 +35,9 @@ const ProductPage = ({ product }) => {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       alert('Product updated');
-      console.log('Product updated:',res.status);
+      router.push('/inventory');
 
     } catch (error) {
-      console.log(formData);
       console.error('Error updating product:', error);
     }
   };

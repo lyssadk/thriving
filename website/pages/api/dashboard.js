@@ -20,7 +20,6 @@ export default async function handler(req, res) {
             total_collected: row.total_year_collected,
             total_tax: row.total_tax,
         }));
-        console.log(data);
         res.status(200).json(data);
     } catch (error) {
         console.error(error);

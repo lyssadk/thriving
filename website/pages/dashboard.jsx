@@ -35,7 +35,8 @@ const DashboardPage = () => {
   }
   , []);
 
-  fetch(`/api/dashboard?year=${year}`)
+  useEffect(() => {
+    fetch(`/api/dashboard?year=${year}`)
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -46,6 +47,7 @@ const DashboardPage = () => {
       .catch(error => {
         console.error('Error fetching dashboard data:', error);
       });
+  }, [year]);
 
   function handleFileUpload() {
     // Get the file selected by the user from the input element
@@ -134,17 +136,8 @@ const DashboardPage = () => {
           console.error('Error adding transaction:', error);
         });
         
-      //   // If tax is a valid number, add it to salesTax
-      //   if (!isNaN(parseFloat(newtax))) {
-      //     salesTax += parseFloat(newtax);
-      //   } else {
-      //     console.log(tax)
-      //     console.warn(`Skipping invalid tax value at line ${i + 1}`);
-      //   }
       }
   
-      // Update the dashboard with the total sales tax
-      // setSalesTax(salesTax.toFixed(2));
     };
   
     reader.readAsText(csvFile); // Read the CSV file as text
@@ -164,7 +157,7 @@ const DashboardPage = () => {
         <h2>Quick Links</h2>
         <ul style={{ listStyleType: 'none', padding: 0, color: 'greenyellow', display: 'flex', justifyContent: 'center' }}>
         <li style={listItemStyle}>
-          <Link href="/create-receipt" style={{ ...linkStyle, color: 'green' }}>Create Receipt</Link>
+          <Link href="/update-receipt/create-receipt" style={{ ...linkStyle, color: 'green' }}>Create Receipt</Link>
         </li>
         <li style={listItemStyle}>
           <Link href="/receipts" style={{ ...linkStyle, color: 'darkgreen' }}>View Orders</Link>
@@ -173,19 +166,7 @@ const DashboardPage = () => {
           <Link href="/add-company" style={{ ...linkStyle, color: 'green' }}>Add Company</Link>
         </li>
         <li style={listItemStyle}>
-          <Link href="/add-product" style={{ ...linkStyle, color: 'green' }}>Add Product</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/edit-product" style={{ ...linkStyle, color: 'orange' }}>Edit Product</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/edit-company" style={{ ...linkStyle, color: 'orange' }}>Edit Company</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/delete-product" style={{ ...linkStyle, color: 'burlywood' }}>Delete Product</Link>
-        </li>
-        <li style={listItemStyle}>
-          <Link href="/delete-company" style={{ ...linkStyle, color: 'burlywood' }}>Delete Company</Link>
+          <Link href="/product-page/add-product" style={{ ...linkStyle, color: 'green' }}>Add Product</Link>
         </li>
         <li style={listItemStyle}>
           <Link href="/email" style={{ ...linkStyle, color: 'blue' }}>Email Fetcher</Link>
@@ -219,6 +200,9 @@ const DashboardPage = () => {
           </div>
           <div style={box}>
           <p>Total Net Sales: ${totalSpent}</p>
+          </div>
+          <div style={box}>
+          <p>Total Spent: ${totalSpent - 100}</p>
           </div>
         </div>
         </div>
