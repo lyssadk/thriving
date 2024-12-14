@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
+import { FormContainer, FormGroup, Label, Input, Button, DeleteButton } from '../../components/styleFormGroups';
 
 const ProductPage = ({ product }) => {
   const router = useRouter();
@@ -64,45 +65,48 @@ const ProductPage = ({ product }) => {
   };
 
   if (router.isFallback) {
-    return <div>Loading...</div>; // Show loading when it's being generated
+    return <FormGroup>Loading...</FormGroup>; // Show loading when it's being generated
   }
 
   // Display the product details if the product data is available
   if (!product) {
-    return <div>Product not found</div>;
+    return <FormGroup>Product not found</FormGroup>;
   }
 
   return (
     <Layout>
+      <FormContainer>
       <form>
-        <input type="hidden" name="id" value={formData.id} />
-        <input type="hidden" name="company" value={formData.company_id} /> {/* Hidden field for company */}
-        <div>
-          <label>Name:</label>
-          <input
+        <Input type="hidden" name="id" value={formData.id} />
+        <Input type="hidden" name="company" value={formData.company_id} /> {/* Hidden field for company */}
+        <FormGroup>
+          <Label>Name:</Label>
+          <Input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Price:</label>
-          <input
+        </FormGroup>
+        <FormGroup>
+          <Label>Price:</Label>
+          <Input
             type="text"
             name="price"
             value={formData.price}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Quantity:</label>
-          <input type="number" name="quantity" value={formData.quantity} onChange={handleChange} />
-        </div>
-        <button type="button" onClick={handleEdit}>Edit Product</button>
-        <button type="button" onClick={handleDelete}>Delete Product</button>
+        </FormGroup>
+        <FormGroup>
+          <Label>Quantity:</Label>
+          <Input type="number" name="quantity" value={formData.quantity} onChange={handleChange} />
+        </FormGroup>
+        <Button type="button" onClick={handleEdit}>Edit Product</Button>
+        <DeleteButton type="button" onClick={handleDelete}>Delete Product</DeleteButton>
       </form>
+      </FormContainer>
     </Layout>
+
   );
 };
 
