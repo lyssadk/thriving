@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
-import { FormContainer, FormGroup, Label, Input, Button, DeleteButton } from '../../components/styleFormGroups';
+import { FormContainer, FormGroup, Label, Input, Button, DeleteButton } from '../../components/styleDivs';
 
 const ProductPage = ({ product }) => {
   const router = useRouter();
