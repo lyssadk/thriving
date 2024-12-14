@@ -3,7 +3,9 @@
   "module": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "bun run next dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -16,7 +18,7 @@
     "@vercel/postgres": "^0.10.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.7",
-    "next": "^15.0.4",
+    "next": "^15.1.0",
     "next-auth": "^4.24.10",
     "nookies": "^2.5.2",
     "pg": "^8.13.1",
