@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import Layout from '../../components/Layout';
-import { FormContainer, FormGroup, Label, Input, Button, Select } from '../../components/styleDivs';
+import { FormContainer, FormGroup, Label, Input, Button, Select, ProductList, ProductItem, DeleteButton } from '../../components/styleDivs';
 
 export default function CreateReceiptForm() {
     const [products, setProducts] = useState([]);

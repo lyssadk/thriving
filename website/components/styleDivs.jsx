@@ -82,4 +82,14 @@ const DeleteButton = ({ children, ...props }) => (
     </button>
 );
 
-export { FormContainer, FormGroup, Label, Input, Button, ProductList, ProductItem, DeleteButton };
+const Select = (props) => (
+    <select style={{
+        width: '100%',
+        padding: '8px',
+        boxSizing: 'border-box',
+        border: '1px solid #ccc',
+        borderRadius: '4px'
+    }} {...props} />
+);
+
+export { FormContainer, FormGroup, Label, Input, Button, ProductList, ProductItem, DeleteButton, Select };
