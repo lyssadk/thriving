@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Layout from '../../components/Layout';
-import { redirect } from 'next/dist/server/api-utils';
+import { useRouter } from 'next/router';
 
 const formStyle = {
   display: 'flex',
@@ -55,7 +55,7 @@ export default function AddProductForm() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [quantity, setQuantity] = useState('');
-
+  const router = useRouter();
   function convertToBase64(e) {
       const files = e.target.files;
       if (files && files.length > 0) {
@@ -127,9 +127,8 @@ export default function AddProductForm() {
       if (!res.ok || res.status !== 200 || res.status !== 201) {throw new Error('Failed to create product');}
       setSuccess(true); // Indicate successful product creation
       alert('Product added successfully!');
-      redirect('/inventory');
-    } catch (err) {
-      setError(err.message); // Handle errors (e.g., network or validation errors)
+      router.push('/inventory');
+    } catch (err) { // Handle errors (e.g., network or validation errors)
       console.log(error);
     } finally {
       setLoading(false);
@@ -145,10 +144,10 @@ export default function AddProductForm() {
       <form style={formStyle} onSubmit={handleSubmit}>
 
       <div>
-          <label htmlFor="productPic" className="block text-sm font-medium leading-6 text-gray-900 text-left">Profile Picture</label>
+          <label htmlFor="productPic" className="block text-sm font-medium leading-6 text-gray-900 text-left">Product Picture</label>
             <div className="mt-2 flex items-center">
               {productPic && (
-                <Image src={productPic} alt="Profile Preview" width={100} height={50}/>
+                <Image src={productPic} alt="Product Preview" width={100} height={50}/>
               )}
               <input 
                 id="productPic" 

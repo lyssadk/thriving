@@ -171,6 +171,9 @@ const DashboardPage = () => {
         <li style={listItemStyle}>
           <Link href="/email" style={{ ...linkStyle, color: 'blue' }}>Email Fetcher</Link>
         </li>
+        <li style={listItemStyle}>
+          <Link href="/company/company-links" style={{ ...linkStyle, color: 'green' }}>Companies</Link>
+        </li>
         </ul>
         <div style={containerStyle}>
           <div>

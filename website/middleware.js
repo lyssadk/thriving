@@ -29,6 +29,8 @@ export const config = {
     '/inventory/:path*',
     '/product-page/add-product/:path*',
     '/add-company/:path*',
+    '/company/:path*',
+    '/company/company-links/:path*',
   ]
 }
 

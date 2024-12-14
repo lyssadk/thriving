@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { FormContainer, FormGroup, Label, Input, Button, Select, ProductList, ProductItem, DeleteButton } from '../../components/styleDivs';
 
@@ -13,7 +14,7 @@ export default function CreateReceiptForm() {
     const [company, setCompany] = useState('');
     const [companies, setCompanies] = useState([]);
     const [product, setProduct] = useState({ name: '', price: 0, wholesale: false, company , quantity: 0});
-  
+    const router = useRouter();
     function addProduct() {
       setProducts([...products, product]);
       setProduct({ name: '', price: 0, wholesale: false, company, quantity: 0});
@@ -45,6 +46,7 @@ export default function CreateReceiptForm() {
         });
         if (!res.ok) throw new Error('Failed to submit receipt');
         alert('Receipt submitted successfully');
+        router.push('/receipts');
       } catch (err) {
         alert(err.message);
       }
