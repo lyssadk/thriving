@@ -1,4 +1,23 @@
-# thrivingcells
+# Thriving Cells REPO WIP
+
+This is a website for my mom's business. The goal? To save her time, duh. I created a email scraper using the GMAIL API that will read her emails and scrape any receipts it finds. Currently I'm working with her on the design and making it look prettier. She is also doing taxes right now so she is writing down additional features she would like. Once we finalize the UX/UI things and she is done, I will continue upgrading it. This also has the endpoints for her inventory, dashboard stats, etc. Still a work in progress but it's coming along! Great learning experience.
+
+## Future improvements
+* Clean up my files and code, after looking back at it there are some busy files that could be simplified / broken up
+* UI/UX is very basic right now
+* Add some checks/filtering to the email scraper (right now it scarily assumes the email will have the information I want in it)
+* Add additional features my mom wants
+
+
+## Technologies:
+* Bun
+* NextJS
+* Javascript
+* Typescript (minimal, very minimal😅)
+* Vercel's Postgres DB
+* GMAIL's API
+
+
 
 To install dependencies:
 
